@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout - Cartique</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <h1>Cartique</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="cart.html">Cart</a>
+    </nav>
+</header>
+
+<section class="checkout">
+    <h2>Checkout</h2>
+    <form id="checkout-form">
+        <label>Name:</label>
+        <input type="text" id="name" required>
+
+        <label>Address:</label>
+        <textarea id="address" required></textarea>
+
+        <label>Phone:</label>
+        <input type="tel" id="phone" required>
+
+        <label>Payment Method:</label>
+        <select id="payment-method" required>
+            <option value="cod">Cash on Delivery (COD)</option>
+        </select>
+
+        <button type="submit">Place Order</button>
+    </form>
+    <p id="confirmation-msg" style="color:green;"></p>
+</section>
+
+<footer>
+    <p>© 2026 Cartique. All Rights Reserved.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

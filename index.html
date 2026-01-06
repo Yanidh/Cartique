@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cartique</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <h1>Cartique</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+    </nav>
+</header>
+
+<section class="products">
+    <div class="product">
+        <img src="https://via.placeholder.com/200" alt="Product 1">
+        <h3>Product 1</h3>
+        <p>?499</p>
+        <button onclick="addToCart('Product 1', 499)">Add to Cart</button>
+    </div>
+    <div class="product">
+        <img src="https://via.placeholder.com/200" alt="Product 2">
+        <h3>Product 2</h3>
+        <p>?899</p>
+        <button onclick="addToCart('Product 2', 899)">Add to Cart</button>
+    </div>
+    <div class="product">
+        <img src="https://via.placeholder.com/200" alt="Product 3">
+        <h3>Product 3</h3>
+        <p>?1299</p>
+        <button onclick="addToCart('Product 3', 1299)">Add to Cart</button>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 Cartique. All Rights Reserved.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

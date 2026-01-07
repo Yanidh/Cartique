@@ -2,43 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cartique</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        .payment-section, .orders-section {
+            background: white;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 8px;
+            max-width: 800px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        .qr-code {
+            display: block;
+            margin: 10px auto;
+            max-width: 200px;
+        }
+        iframe {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
-<header>
+
     <h1>Cartique</h1>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
-    </nav>
-</header>
 
-<section class="products">
-    <div class="product">
-        <img src="https://via.placeholder.com/200" alt="Product 1">
-        <h3>Product 1</h3>
-        <p>?499</p>
-        <button onclick="addToCart('Product 1', 499)">Add to Cart</button>
-    </div>
-    <div class="product">
-        <img src="https://via.placeholder.com/200" alt="Product 2">
-        <h3>Product 2</h3>
-        <p>?899</p>
-        <button onclick="addToCart('Product 2', 899)">Add to Cart</button>
-    </div>
-    <div class="product">
-        <img src="https://via.placeholder.com/200" alt="Product 3">
-        <h3>Product 3</h3>
-        <p>?1299</p>
-        <button onclick="addToCart('Product 3', 1299)">Add to Cart</button>
-    </div>
-</section>
+    <!-- Payment Section -->
+    <div class="payment-section">
+        <h2>Payment Options</h2>
+        <p>Choose your payment method:</p>
+        <ul>
+            <li><strong>Cash on Delivery (COD)</strong></li>
+            <li><strong>UPI Payment</strong></li>
+        </ul>
+        <p>If you choose UPI, scan the QR code below and send the amount. After payment, upload the transaction screenshot or note the Transaction ID in the form.</p>
 
-<footer>
-    <p>© 2026 Cartique. All Rights Reserved.</p>
-</footer>
+        <!-- QR Code image -->
+        <img class="qr-code" src="YOUR_QR_IMAGE_LINK_HERE" alt="UPI QR Code">
 
-<script src="script.js"></script>
+        <p><strong>UPI ID for reference:</strong> 9XXXXXXXXX</p>
+    </div>
+
+    <!-- Orders Section -->
+    <div class="orders-section">
+        <h2>Customer Orders</h2>
+        <iframe src="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/pubhtml?widget=true&headers=false" width="100%" height="500"></iframe>
+    </div>
+
 </body>
 </html>

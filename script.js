@@ -1,55 +1,92 @@
-let cart = [];
+// CART DATA (persistent)
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-function updateCartCount() {
-    document.getElementById("cart-count").innerText = cart.length;
+// SAVE CART
+function saveCart() {
+    localStorage.setItem("cart", JSON.stringify(cart));
 }
 
+// ADD TO CART
 function addToCart(name, price) {
-    cart.push({name, price});
+    const item = cart.find(p => p.name === name);
+    if (item) {
+        item.qty += 1;
+    } else {
+        cart.push({ name, price, qty: 1 });
+    }
+    saveCart();
     updateCartCount();
-    alert(name + " added to cart!");
+    alert(name + " added to cart");
 }
 
+// UPDATE CART COUNT (header)
+function updateCartCount() {
+    const count = cart.reduce((sum, item) => sum + item.qty, 0);
+    document.querySelectorAll("#cart-count").forEach(el => {
+        el.innerText = count;
+    });
+}
+
+// DISPLAY CART PAGE
 function displayCart() {
-    let table = document.getElementById("cart-table");
+    const table = document.getElementById("cart-table");
+    const totalEl = document.getElementById("total-price");
+    if (!table || !totalEl) return;
+
+    table.innerHTML = `
+        <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Remove</th>
+        </tr>
+    `;
+
     let total = 0;
 
-    // Clear previous rows except header
-    table.innerHTML = `<tr>
-        <th>Product</th>
-        <th>Price</th>
-        <th>Remove</th>
-    </tr>`;
-
     cart.forEach((item, index) => {
-        let row = table.insertRow();
-        row.insertCell(0).innerText = item.name;
-        row.insertCell(1).innerText = "?" + item.price;
-        row.insertCell(2).innerHTML = `<button onclick="removeFromCart(${index})">Remove</button>`;
-        total += item.price;
+        total += item.price * item.qty;
+        table.innerHTML += `
+            <tr>
+                <td>${item.name}</td>
+                <td>${item.qty}</td>
+                <td>?${item.price * item.qty}</td>
+                <td>
+                    <button onclick="removeFromCart(${index})">X</button>
+                </td>
+            </tr>
+        `;
     });
 
-    document.getElementById("total-price").innerText = total;
+    totalEl.innerText = total;
 }
 
+// REMOVE ITEM
 function removeFromCart(index) {
     cart.splice(index, 1);
+    saveCart();
     displayCart();
     updateCartCount();
 }
 
-// COD form submission
-if(document.getElementById("checkout-form")){
-    document.getElementById("checkout-form").addEventListener("submit", function(e){
-        e.preventDefault();
-        let name = document.getElementById("name").value;
-        document.getElementById("confirmation-msg").innerText = `Thank you ${name}! Your COD order has been placed.`;
-        cart = [];
-        updateCartCount();
+// CHECKOUT SUMMARY
+function displaySummary() {
+    const list = document.getElementById("summary");
+    const totalEl = document.getElementById("summary-total");
+    if (!list || !totalEl) return;
+
+    list.innerHTML = "";
+    let total = 0;
+
+    cart.forEach(item => {
+        list.innerHTML += `<li>${item.name} x ${item.qty}</li>`;
+        total += item.price * item.qty;
     });
+
+    totalEl.innerText = total;
 }
 
-// Auto display cart page
-if(document.getElementById("cart-table")){
-    displayCart();
-}
+// INIT
+updateCartCount();
+displayCart();
+displaySummary();

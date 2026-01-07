@@ -31,6 +31,9 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+        ul {
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
@@ -40,12 +43,11 @@
     <!-- Payment Section -->
     <div class="payment-section">
         <h2>Payment Options</h2>
-        <p>Choose your payment method:</p>
         <ul>
             <li><strong>Cash on Delivery (COD)</strong></li>
             <li><strong>UPI Payment</strong></li>
         </ul>
-        <p>If you choose UPI, scan the QR code below and send the amount. After payment, upload the transaction screenshot or note the Transaction ID in the form.</p>
+        <p>If you choose UPI, scan the QR code below and send the amount. After payment, upload the transaction screenshot or note the Transaction ID in the order form.</p>
 
         <!-- QR Code image -->
         <img class="qr-code" src="YOUR_QR_IMAGE_LINK_HERE" alt="UPI QR Code">
@@ -56,7 +58,8 @@
     <!-- Orders Section -->
     <div class="orders-section">
         <h2>Customer Orders</h2>
-        <iframe src="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/pubhtml?widget=true&headers=false" width="100%" height="500"></iframe>
+        <!-- Google Sheet iframe -->
+        <iframe src="https://docs.google.com/spreadsheets/d/138c7nK3hsOEZW3yU2rFiMLUcO9oxDER04Iv_5OBBsWM/pubhtml?widget=true&headers=false" width="100%" height="500"></iframe>
     </div>
 
 </body>

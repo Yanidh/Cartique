@@ -3,24 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cartique</title>
+    <title>Cartique Marketplace</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f5f5f5;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
         }
-        h1, h2 {
-            text-align: center;
-            color: #333;
-        }
-        .payment-section, .orders-section {
-            background: #fff;
+        header {
+            background: #ff6600;
+            color: white;
             padding: 20px;
-            margin: 20px auto;
+            text-align: center;
+        }
+        h2 {text-align:center;}
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .product {
+            background: white;
             border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .product img {width: 100%; max-height:150px; object-fit:contain;}
+        button {
+            background: #ff6600;
+            color:white;
+            border:none;
+            padding:10px 15px;
+            cursor:pointer;
+            border-radius:5px;
+        }
+        #cart-section, #checkout-section {
             max-width: 800px;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            background: white;
+            margin:20px auto;
+            padding:20px;
+            border-radius:8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .cart-item {
+            display:flex;
+            justify-content:space-between;
+            margin-bottom:10px;
         }
         .qr-code {
             display: block;
@@ -29,43 +62,115 @@
         }
         iframe {
             width: 100%;
-            height: 500px;
+            height: 400px;
             border: 1px solid #ccc;
             border-radius: 5px;
-        }
-        ul {
-            line-height: 1.6;
-        }
-        p {
-            font-size: 16px;
         }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <h1>Cartique</h1>
+<header>
+    <h1>Cartique Marketplace</h1>
+    <p>Amazon-style MVP for Vendors & Customers</p>
+</header>
 
-    <!-- Payment Section -->
-    <div class="payment-section">
-        <h2>Payment Options</h2>
-        <ul>
-            <li><strong>Cash on Delivery (COD)</strong></li>
-            <li><strong>UPI Payment</strong></li>
-        </ul>
-        <p>If you choose UPI, scan the QR code below and send the amount. After payment, upload the transaction screenshot or note the Transaction ID in the order form.</p>
+<h2>Products</h2>
+<div class="container" id="product-list">
+    <!-- Products injected by JS -->
+</div>
 
-        <!-- QR Code -->
-        <img class="qr-code" src="https://i.ibb.co/BHgmnK90/d6732ae2-b629-4615-b01b-fae8a081c261.jpg" alt="UPI QR Code">
+<div id="cart-section">
+    <h2>Your Cart</h2>
+    <div id="cart-items"></div>
+    <p><strong>Total: ₹<span id="cart-total">0</span></strong></p>
+    <button onclick="checkout()">Proceed to Checkout</button>
+</div>
 
-        <p style="text-align:center;"><strong>UPI ID:</strong> 7559241239@ybl</p>
-    </div>
+<div id="checkout-section" style="display:none;">
+    <h2>Checkout</h2>
+    <p>Select Payment Option:</p>
+    <ul>
+        <li><strong>Cash on Delivery (COD)</strong></li>
+        <li><strong>UPI Payment</strong></li>
+    </ul>
+    <p>If you choose UPI, scan the QR code below and send the amount. After payment, upload the transaction screenshot or note the Transaction ID in the order form.</p>
+    <img class="qr-code" src="https://i.ibb.co/BHgmnK90/d6732ae2-b629-4615-b01b-fae8a081c261.jpg" alt="UPI QR Code">
+    <p style="text-align:center;"><strong>UPI ID:</strong> 7559241239@ybl</p>
 
-    <!-- Orders Section -->
-    <div class="orders-section">
-        <h2>Customer Orders</h2>
-        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRFA1tcPKetKImy01n2uL7JbCvUPkAuoOAwIHJDFQZukRnD1SIqTQdiV60nN2kduR8jOxUGEt2qQQL-/pubhtml?widget=true&headers=false"></iframe>
-    </div>
+    <h3>Submit Order</h3>
+    <p>Fill this Google Form to submit your order:</p>
+    <a href="YOUR_GOOGLE_FORM_LINK" target="_blank">Order Form</a>
+
+    <h3>Orders (Admin View)</h3>
+    <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRFA1tcPKetKImy01n2uL7JbCvUPkAuoOAwIHJDFQZukRnD1SIqTQdiV60nN2kduR8jOxUGEt2qQQL-/pubhtml?widget=true&headers=false"></iframe>
+</div>
+
+<script>
+// Sample products
+const products = [
+    {id:1,name:"Product 1",price:199,img:"https://via.placeholder.com/150",vendor:"Vendor A"},
+    {id:2,name:"Product 2",price:299,img:"https://via.placeholder.com/150",vendor:"Vendor B"},
+    {id:3,name:"Product 3",price:399,img:"https://via.placeholder.com/150",vendor:"Vendor C"},
+    {id:4,name:"Product 4",price:499,img:"https://via.placeholder.com/150",vendor:"Vendor D"}
+];
+
+let cart = [];
+
+function displayProducts(){
+    const container = document.getElementById('product-list');
+    products.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'product';
+        div.innerHTML = `
+            <img src="${p.img}" alt="${p.name}">
+            <h3>${p.name}</h3>
+            <p>Vendor: ${p.vendor}</p>
+            <p>Price: ₹${p.price}</p>
+            <button onclick="addToCart(${p.id})">Add to Cart</button>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function addToCart(id){
+    const product = products.find(p=>p.id===id);
+    cart.push(product);
+    updateCart();
+}
+
+function updateCart(){
+    const container = document.getElementById('cart-items');
+    container.innerHTML = '';
+    let total = 0;
+    cart.forEach((item,index)=>{
+        total += item.price;
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+            <span>${item.name} (₹${item.price})</span>
+            <button onclick="removeFromCart(${index})">Remove</button>
+        `;
+        container.appendChild(div);
+    });
+    document.getElementById('cart-total').innerText = total;
+}
+
+function removeFromCart(index){
+    cart.splice(index,1);
+    updateCart();
+}
+
+function checkout(){
+    if(cart.length===0){alert("Cart is empty!"); return;}
+    document.getElementById('checkout-section').style.display='block';
+    window.scrollTo(0, document.body.scrollHeight);
+}
+
+// Initialize
+displayProducts();
+updateCart();
+</script>
 
 </body>
 </html>
